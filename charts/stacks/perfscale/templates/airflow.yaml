@@ -1,3 +1,4 @@
+{{ if .Values.airflow.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -8,16 +9,16 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: {{ .Values.global.project }}
   destination: 
-    namespace: airflow
-    server: https://kubernetes.default.svc
+    namespace: {{ .Values.airflow.namespace }}
+    server: {{ .Values.global.clusterURL }}
   source:
-    repoURL: https://airflow.apache.org
-    chart: airflow
-    targetRevision: {{ .Values.airflow.chartVersion }}
+    repoURL: {{ .Values.airflow.source.repoURL }}
+    chart: {{ .Values.airflow.source.chart }} 
+    targetRevision: {{ .Values.airflow.source.targetRevision | default "HEAD" }}
     helm:
-      releaseName: airflow
+      releaseName: {{ .Values.airflow.name }}
 {{- with .Values.airflow.values }}
       values: |-
 {{- toYaml . | nindent 8 }}
@@ -27,15 +28,15 @@ spec:
         - name: AIRFLOW__CORE__KILLED_TASK_CLEANUP_TIME
           value: 604800
         - name: GIT_REPO
-          value: {{ $.Values.global.repo.url }}
+          value: {{ $.Values.airflow.dagRepo.url }}
         - name: GIT_BRANCH
-          value: {{ $.Values.global.repo.branch }}
+          value: {{ $.Values.airflow.dagRepo.branch }}
 {{- end }}        
       parameters:
       - name: dags.gitSync.repo
-        value: {{ .Values.global.repo.url }}
+        value: {{ .Values.airflow.dagRepo.url }}
       - name: dags.gitSync.branch
-        value: {{ .Values.global.repo.branch }}
+        value: {{ .Values.airflow.dagRepo.branch }}
   syncPolicy:
     automated:
       prune: true
@@ -44,72 +45,17 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: airflow
-  namespace: airflow
+  name: {{ .Values.airflow.name }}
+  namespace: {{ .Values.airflow.name }}
   annotations:
     argocd.argoproj.io/sync-wave: {{ .Values.airflow.syncWave | quote }}
 spec:
-  host: {{ .Values.airflow.hostName }}.{{ .Values.global.baseDomain }}
+  host: {{ .Values.airflow.name }}.{{ .Values.global.baseDomain }}
   port:
     targetPort: 8080
   to:
     kind: Service
-    name: airflow-webserver
+    name: {{ .Values.airflow.name }}-webserver
     weight: 100
   wildcardPolicy: None
---- 
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: pod-reader
-rules:
-- apiGroups: [""] # "" indicates the core API group
-  resources: ["pods", "pods/log"]
-  verbs: ["get", "watch", "list"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-# This cluster role binding allows anyone in the "manager" group to read secrets in any namespace.
-kind: ClusterRoleBinding
-metadata:
-  name: pod-reader
-  annotations:
-    argocd.argoproj.io/sync-wave: {{ .Values.airflow.syncWave | quote }}
-subjects:
-- kind: ServiceAccount
-  name: airflow-webserver # Name is case sensitive
-  namespace: airflow
-- kind: ServiceAccount
-  name: airflow-worker # Name is case sensitive
-  namespace: airflow
-roleRef:
-  kind: ClusterRole
-  name: pod-reader
-  apiGroup: rbac.authorization.k8s.io
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: airflow-worker
-  namespace: airflow
-  annotations:
-    argocd.argoproj.io/sync-wave: {{ .Values.airflow.syncWave | quote }}
-rules:
-- apiGroups: [""] # "" indicates the core API group
-  resources: ["secrets", "configmaps", "pods"]
-  verbs:  ["get", "list", "watch", "create", "update", "patch", "delete"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: airflow-worker
-  namespace: airflow
-  annotations:
-    argocd.argoproj.io/sync-wave: {{ .Values.airflow.syncWave | quote }}
-subjects:
-- kind: ServiceAccount
-  name: airflow-worker
-  namespace: airflow
-roleRef:
-  kind: Role
-  name:  airflow-worker
-  apiGroup: rbac.authorization.k8s.io
+{{ end }}

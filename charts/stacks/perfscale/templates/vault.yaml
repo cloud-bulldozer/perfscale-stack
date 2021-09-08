@@ -1,0 +1,45 @@
+{{ if .Values.vault.enabled }} 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.vault.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .Values.vault.syncWave | default "0" | quote }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  destination: 
+    namespace: {{ .Values.vault.namespace }}
+    server: {{ .Values.global.clusterURL }}
+  source:
+    repoURL: {{ .Values.vault.source.repoURL }}
+    chart: {{ .Values.vault.source.chart }} 
+    targetRevision: {{ .Values.vault.source.targetRevision | default "HEAD" }}
+    helm:
+      releaseName: {{ .Values.vault.name }}
+{{- with .Values.vault.values }}
+      values: |-
+{{- toYaml . | nindent 8 }}
+{{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: route.openshift.io/v1                                                                                    
+kind: Route                                                                                                          
+metadata:                                                                                                                                                                                                                                                                        
+  name: {{ .Values.vault.name }}                                                                                               
+  namespace: {{ .Values.vault.namespace }}                                                                                                                                                                       
+spec:                                                                                                                
+  host: {{ .Values.vault.name }}.{{ .Values.global.baseDomain }}                                  
+  port:                                                                                                              
+    targetPort: http                                                                                        
+  to:                                                                                                                
+    kind: Service                                                                                                    
+    name: {{ .Values.vault.name }}                                                                                           
+    weight: 100                                                                                                      
+  wildcardPolicy: None                                                                                               
+{{ end }}

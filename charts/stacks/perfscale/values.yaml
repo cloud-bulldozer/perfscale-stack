@@ -1,17 +1,20 @@
-nameOverride: ""
-fullnameOverride: ""
-
 global:
+  project: default
   baseDomain: ""
-  repo:
-    url: https://github.com/whitleykeith/airflow-kubernetes.git
-    branch: master
-
-
+  clusterURL: https://kubernetes.default.svc
+  
 airflow:
+  name: airflow
+  enabled: true
   syncWave: 0
-  hostName: airflow
-  chartVersion: 1.1.0
+  namespace: airflow
+  dagRepo:
+    url: https://github.com/cloud-bulldozer/airflow-kubernetes
+    branch: master
+  source:
+    repoURL: https://airflow.apache.org
+    chart: airflow
+    targetRevision: 1.1.0
   values: 
     executor: KubernetesExecutor
     defaultAirflowRepository: quay.io/cloud-bulldozer/airflow
@@ -49,88 +52,37 @@ airflow:
         "helm.sh/hook-weight": ""
         "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 
-
-argo:
-  syncWave: 0
-  hostName: argo
+argocd: 
+  name: argocd
+  enabled: true
+  syncWave: -10000
+  namespace: argocd
+  source:
+    repoURL: https://github.com/argoproj/argo-helm
+    path: argo-helm/charts
+    targetRevision: HEAD
   values: {}
 
-
-results:
-  syncWave: 1
-  dashboard:
-    values:
-      elasticsearch:
-        url: perf-results-es-http.perf-results.svc.cluster.local:9200
-        indice: perf_scale_ci
-        username: elastic
-  elastic:
-    enabled: false 
-    values:
-      elasticsearch:
-        nodeSets:
-        - name: default      
-          count: 3
-          volumeClaimTemplates:
-          - metadata:
-              name: elasticsearch-data
-            spec:
-              accessModes:
-              - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 100Gi
-          config:
-            node.store.allow_mmap: false
-            xpack.security.authc:
-              anonymous:
-                username: anonymous_user
-                roles: superuser
-          podTemplate:
-            spec:
-              containers:
-              - name: elasticsearch
-                resources:
-                  limits:
-                    memory: 16Gi
-                securityContext:
-                  capabilities:
-                    add: ["SYS_CHROOT"]
-
-
-logging: 
+dashboard: 
+  name: perf-dashboard
+  enabled: true
   syncWave: 0
-  fluentd:
-    mergeJsonLogs: false
-    values: {}
-  elastic:
-    values:
-      elasticsearch:
-        nodeSets:
-        - name: default      
-          count: 3
-          volumeClaimTemplates:
-          - metadata:
-              name: elasticsearch-data
-            spec:
-              accessModes:
-              - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 100Gi
-          config:
-            node.store.allow_mmap: false
-            xpack.security.authc:
-              anonymous:
-                username: anonymous_user
-                roles: superuser
-          podTemplate:
-            spec:
-              containers:
-              - name: elasticsearch
-                resources:
-                  limits:
-                    memory: 16Gi
-                securityContext:
-                  capabilities:
-                    add: ["SYS_CHROOT"]
+  namespace: perf-dashboard
+  source:
+    repoURL: https://github.com/whitleykeith/perfscale-stack
+    path: charts/components/dashboard
+    targetRevision: HEAD
+  values: {}
+
+vault:
+  name: vault
+  enabled: true 
+  syncWave: -9999
+  namespace: vault
+  source:
+    repoURL: https://helm.releases.hashicorp.com
+    chart: vault
+    targetRevision: ""
+  values:
+    global:
+      openshift: true 

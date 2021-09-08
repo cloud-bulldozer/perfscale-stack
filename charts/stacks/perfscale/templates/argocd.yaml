@@ -1,12 +1,42 @@
+{{ if .Values.argocd.enabled }} 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .Values.argocd.syncWave | default "0" | quote }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  destination: 
+    namespace: {{ .Values.argocd.namespace }}
+    server: {{ .Values.global.clusterURL }}
+  source:
+    repoURL: {{ .Values.argocd.source.repoURL }}
+    path: {{ .Values.argocd.source.path }} 
+    targetRevision: {{ .Values.argocd.source.targetRevision | default "HEAD" }}
+    helm:
+      releaseName: {{ .Values.argocd.name }}
+{{- with .Values.argocd.values }}
+      values: |-
+{{- toYaml . | nindent 8 }}
+{{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: argocd
-  namespace: argocd
+  name: {{ .Values.argocd.name }}
+  namespace: {{ .Values.argocd.namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: {{ .Values.argo.syncWave | quote }}
+    argocd.argoproj.io/sync-wave: {{ .Values.argocd.syncWave | quote }}
 spec:
-  host: {{ .Values.argo.hostName }}.{{ .Values.global.baseDomain }}
+  host: {{ .Values.argocd.name }}.{{ .Values.global.baseDomain }}
   port:
     targetPort: https
   tls:
@@ -17,4 +47,4 @@ spec:
     name: argocd-server
     weight: 100
   wildcardPolicy: None
-
+{{ end }}

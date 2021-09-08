@@ -1,10 +1,11 @@
+{{ if .Values.dashboard.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: perf-dashboard
+  name: {{ .Values.dashboard.name }}
   namespace: {{ .Release.Namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: {{ .Values.results.syncWave | quote }}
+    argocd.argoproj.io/sync-wave: {{ .Values.dashboard.syncWave | quote }}
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
@@ -29,15 +30,15 @@ spec:
       - /spec/template/spec/containers/1/image
   project: default
   destination: 
-    namespace: perf-results
-    server: https://kubernetes.default.svc
+    namespace: {{ .Values.dashboard.namespace }}
+    server: {{ .Values.global.clusterURL }}
   source:
-    repoURL: {{ .Values.global.repo.url }}
-    path: charts/dashboard
-    targetRevision: {{ .Values.global.repo.branch }}
+    repoURL: {{ .Values.dashboard.source.repoURL }}
+    path: {{ .Values.dashboard.source.path }} 
+    targetRevision: {{ .Values.dashboard.source.targetRevision | default "HEAD" }}
     helm:
-      releaseName: perf-dashboard
-{{- with .Values.results.dashboard.values }}
+      releaseName: {{ .Values.dashboard.name }}
+{{ with .Values.dashboard.values }}
       values: |-
 {{- toYaml . | nindent 8 }}
 {{- end }}  
@@ -48,3 +49,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+{{ end }}

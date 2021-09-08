@@ -1,0 +1,45 @@
+{{ if .Values.thanos.enabled }} 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.thanos.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .Values.thanos.syncWave | default "0" | quote }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  destination: 
+    namespace: {{ .Values.thanos.namespace }}
+    server: {{ .Values.global.clusterURL }}
+  source:
+    repoURL: {{ .Values.thanos.source.repoURL }}
+    chart: {{ .Values.thanos.source.chart }} 
+    targetRevision: {{ .Values.thanos.source.targetRevision | default "HEAD" }}
+    helm:
+      releaseName: {{ .Values.thanos.name }}
+{{- with .Values.thanos.values }}
+      values: |-
+{{- toYaml . | nindent 8 }}
+{{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: route.openshift.io/v1                                                                                    
+kind: Route                                                                                                          
+metadata:                                                                                                                                                                                                                                                                        
+  name: {{ .Values.thanos.name }}                                                                                               
+  namespace: {{ .Values.thanos.namespace }}                                                                                                                                                                       
+spec:                                                                                                                
+  host: {{ .Values.thanos.name }}.{{ .Values.global.baseDomain }}                                  
+  port:                                                                                                              
+    targetPort: remote-write                                                                                         
+  to:                                                                                                                
+    kind: Service                                                                                                    
+    name: {{ .Values.thanos.name }}-receive                                                                                             
+    weight: 100                                                                                                      
+  wildcardPolicy: None                                                                                               
+{{ end }}

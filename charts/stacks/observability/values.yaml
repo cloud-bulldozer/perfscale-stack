@@ -1,0 +1,63 @@
+global:
+  project: default
+  baseDomain: ""
+  clusterURL: https://kubernetes.default.svc
+
+elastic:
+  name: perf-results
+  enabled: true
+  syncWave: 1
+  namespace: perf-results
+  source:
+    repoURL: https://github.com/whitleykeith/perfscale-stack
+    path: charts/components/elasticsearch
+    targetRevision: HEAD
+  values: {}
+
+elasticOperator:
+  name: eck-operator
+  enabled: true
+  syncWave: 0
+  namespace: elastic-system
+  source:
+    repoURL: https://github.com/elastic/cloud-on-k8s
+    path: deploy/eck-operator
+    targetRevision: HEAD
+  values:
+    image:
+      tag: 1.3.0
+
+
+thanos:
+  name: thanos
+  enabled: true
+  syncWave: 0
+  namespace: thanos
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: thanos
+    targetRevision: ""
+  values: {}
+
+loki:
+  name: loki
+  enabled: true
+  syncWave: 0
+  namespace: loki
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki
+    targetRevision: ""
+  values: {}
+
+promtail: 
+  name: promtail
+  enabled: true
+  syncWave: 0
+  namespace: promtail
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: promtail
+    targetRevision: ""
+  values: {}
+  

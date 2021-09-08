@@ -1,0 +1,37 @@
+{{ if and .Values.elastic.enabled .Values.elasticOperator.enabled }} 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.elastic.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .Values.elastic.syncWave | default "0" | quote }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  destination: 
+    namespace: {{ .Values.elastic.namespace }}
+    server: {{ .Values.global.clusterURL }}
+  source:
+    repoURL: {{ .Values.elastic.source.repoURL }}
+    path: {{ .Values.elastic.source.path }} 
+    targetRevision: {{ .Values.elastic.source.targetRevision | default "HEAD" }}
+    helm:
+      releaseName: {{ .Values.elastic.name }}
+{{- with .Values.elastic.values }}
+      values: |-
+{{- toYaml . | nindent 8 }}
+{{- end }}
+      parameters:
+      - name: fullnameOverride
+        value: {{ .Values.elastic.name }}
+      - name: ingress.hostName
+        value: {{ .Values.elastic.name }}
+      - name: ingress.baseDomain
+        value: {{ .Values.global.baseDomain }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{ end }}

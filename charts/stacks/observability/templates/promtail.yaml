@@ -1,0 +1,30 @@
+{{ if and .Values.promtail.enabled .Values.loki.enabled }} 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.promtail.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .Values.promtail.syncWave | default "0" | quote }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  destination: 
+    namespace: {{ .Values.promtail.namespace }}
+    server: {{ .Values.global.clusterURL }}
+  source:
+    repoURL: {{ .Values.promtail.source.repoURL }}
+    chart: {{ .Values.promtail.source.chart }} 
+    targetRevision: {{ .Values.promtail.source.targetRevision | default "HEAD" }}
+    helm:
+      releaseName: {{ .Values.promtail.name }}
+{{- with .Values.promtail.values }}
+      values: |-
+{{- toYaml . | nindent 8 }}
+{{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{ end }}

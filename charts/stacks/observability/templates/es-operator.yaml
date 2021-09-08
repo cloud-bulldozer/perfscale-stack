@@ -1,0 +1,46 @@
+{{ if .Values.elasticOperator.enabled }} 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.elasticOperator.name | default "eck-operator" }}
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  ignoreDifferences:
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+    jsonPointers:
+      - /webhooks/0/clientConfig/caBundle
+      - /webhooks/1/clientConfig/caBundle
+      - /webhooks/2/clientConfig/caBundle
+      - /webhooks/3/clientConfig/caBundle
+      - /webhooks/4/clientConfig/caBundle
+      - /webhooks/5/clientConfig/caBundle
+      - /webhooks/6/clientConfig/caBundle
+      - /webhooks/7/clientConfig/caBundle
+      - /webhooks/8/clientConfig/caBundle
+      - /webhooks/9/clientConfig/caBundle
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    jsonPointers:
+      - /spec/versions/2/schema/openAPIV3Schema/properties
+  project: {{ .Values.global.project }}
+  destination: 
+    namespace: {{ .Values.elasticOperator.namespace | default "elastic-system" }}
+    server: {{ .Values.global.clusterURL }}
+  source:
+    repoURL: {{ .Values.elasticOperator.source.repoURL }}
+    path: {{ .Values.elasticOperator.source.path }} 
+    targetRevision: {{ .Values.elasticOperator.source.targetRevision | default "HEAD" }}
+    helm:
+      releaseName: {{ .Values.elasticOperator.name | default "eck-operator" }}
+{{- with .Values.elasticOperator.values }}
+      values: |-
+{{- toYaml . | nindent 8 }}
+{{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{ end }}

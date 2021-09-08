@@ -1,0 +1,45 @@
+{{ if .Values.loki.enabled }} 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.loki.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .Values.loki.syncWave | default "0" | quote }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  destination: 
+    namespace: {{ .Values.loki.namespace }}
+    server: {{ .Values.global.clusterURL }}
+  source:
+    repoURL: {{ .Values.loki.source.repoURL }}
+    chart: {{ .Values.loki.source.chart }} 
+    targetRevision: {{ .Values.loki.source.targetRevision | default "HEAD" }}
+    helm:
+      releaseName: {{ .Values.loki.name }}
+{{- with .Values.loki.values }}
+      values: |-
+{{- toYaml . | nindent 8 }}
+{{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: route.openshift.io/v1                                                                                    
+kind: Route                                                                                                          
+metadata:                                                                                                                                                                                                                                                                        
+  name: {{ .Values.loki.name }}                                                                                               
+  namespace: {{ .Values.loki.namespace }}                                                                                                                                                                       
+spec:                                                                                                                
+  host: {{ .Values.loki.name }}.{{ .Values.global.baseDomain }}                                  
+  port:                                                                                                              
+    targetPort: http-metrics                                                                                        
+  to:                                                                                                                
+    kind: Service                                                                                                    
+    name: {{ .Values.loki.name }}                                                                                             
+    weight: 100                                                                                                      
+  wildcardPolicy: None       
+{{ end }}

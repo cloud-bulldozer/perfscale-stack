@@ -71,8 +71,6 @@ argocd:
     fullnameOverride: argocd
     installCRDs: false
     server:
-      extraArgs:
-        - --insecure
       config:
         repositories: |
           - type: helm

@@ -59,7 +59,13 @@ promtail:
     repoURL: https://grafana.github.io/helm-charts
     chart: promtail
     targetRevision: "x.x.x"
-  values: {}
+  values: 
+    securityContext: 
+      privileged: true
+      allowPrivilegeEscalation: true
+    containerSecurityContext:
+      privileged: true
+      allowPrivilegeEscalation: true
   
 
 grafana: 

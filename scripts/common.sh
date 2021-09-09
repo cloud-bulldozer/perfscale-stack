@@ -2,7 +2,8 @@
 _cluster_domain=$(kubectl get ingresses.config.openshift.io/cluster -o jsonpath='{.spec.domain}')
 
 install_argo(){    
-    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    helm repo add argo https://argoproj.github.io/argo-helm 
+    helm upgrade --install argocd argo/argo-cd --namespace argocd
 }
 
 pre_install(){

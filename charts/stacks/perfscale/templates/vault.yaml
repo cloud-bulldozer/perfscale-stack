@@ -16,7 +16,7 @@ spec:
   source:
     repoURL: {{ .Values.vault.source.repoURL }}
     chart: {{ .Values.vault.source.chart }} 
-    targetRevision: {{ .Values.vault.source.targetRevision | default "HEAD" }}
+    targetRevision: {{ .Values.vault.source.targetRevision | default "" }}
     helm:
       releaseName: {{ .Values.vault.name }}
 {{- with .Values.vault.values }}

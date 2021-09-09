@@ -9,6 +9,11 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
+  ignoreDifferences:
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+    jsonPointers:
+      - /webhooks/0/clientConfig/caBundle
   project: {{ .Values.global.project }}
   destination: 
     namespace: {{ .Values.vault.namespace }}

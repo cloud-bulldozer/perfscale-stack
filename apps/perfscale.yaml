@@ -4,7 +4,7 @@ metadata:
   name: perfscale
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: 0
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   source:
     repoURL: https://github.com/whitleykeith/perfscale-stack
-    chart: charts/stacks/perfscale
+    path: charts/stacks/perfscale
     targetRevision: HEAD
     helm:
       releaseName: perfscale

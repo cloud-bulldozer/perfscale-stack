@@ -66,7 +66,7 @@ argocd:
   source:
     repoURL: https://github.com/argoproj/argo-helm
     path: argo-helm/charts
-    targetRevision: HEAD
+    targetRevision: ""
   values:
       installCRDs: false
       global:
@@ -100,7 +100,7 @@ vault:
   source:
     repoURL: https://helm.releases.hashicorp.com
     chart: vault
-    targetRevision: "*"
+    targetRevision: ""
   values:
     global:
       openshift: true 

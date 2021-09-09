@@ -100,7 +100,7 @@ vault:
   source:
     repoURL: https://helm.releases.hashicorp.com
     chart: vault
-    targetRevision: ""
+    targetRevision: "x.x.x"
   values:
     global:
       openshift: true 

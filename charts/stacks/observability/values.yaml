@@ -48,7 +48,10 @@ loki:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
     targetRevision: "x.x.x"
-  values: {}
+  values:
+    persistence:
+      enabled: true
+      size: 1024Gi
 
 promtail: 
   name: promtail
@@ -66,6 +69,8 @@ promtail:
     containerSecurityContext:
       privileged: true
       allowPrivilegeEscalation: true
+    config:
+      lokiAddress: loki.loki.svc.cluster.local:3100/loki/api/v1/push
   
 
 grafana: 

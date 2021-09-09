@@ -25,7 +25,7 @@ spec:
 {{- end }}
       parameters:
       - name: server.route.enabled
-        value: true
+        value: "true"
       - name: server.route.hostname
         value: {{ .Values.argocd.name }}.{{ .Values.global.baseDomain }}
   syncPolicy:

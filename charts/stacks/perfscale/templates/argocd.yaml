@@ -28,6 +28,8 @@ spec:
         value: "true"
       - name: server.route.hostname
         value: "{{ .Values.argocd.name }}.{{ .Values.global.baseDomain }}"
+      - name: configs.openshift.enabled
+        value: "true"
   syncPolicy:
     automated:
       prune: true

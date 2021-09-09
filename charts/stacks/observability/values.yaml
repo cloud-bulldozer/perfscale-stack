@@ -82,4 +82,7 @@ grafana:
     repoURL: https://grafana.github.io/helm-charts
     chart: grafana
     targetRevision: "x.x.x"
-  values: {}
+  values:
+    persistence:
+      enabled: true
+      size: 1024Gi

@@ -15,8 +15,8 @@ spec:
     server: {{ .Values.global.clusterURL }}
   source:
     repoURL: {{ .Values.argocd.source.repoURL }}
-    path: {{ .Values.argocd.source.path }} 
-    targetRevision: {{ .Values.argocd.source.targetRevision | default "HEAD" }}
+    chart: {{ .Values.argocd.source.chart }} 
+    targetRevision: {{ .Values.argocd.source.targetRevision | default "x.x.x" }}
     helm:
       releaseName: {{ .Values.argocd.name }}
 {{- with .Values.argocd.values }}

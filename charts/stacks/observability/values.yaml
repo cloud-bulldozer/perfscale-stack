@@ -61,3 +61,14 @@ promtail:
     targetRevision: "x.x.x"
   values: {}
   
+
+grafana: 
+  name: grafana
+  enabled: true
+  syncWave: 0
+  namespace: grafana
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: grafana
+    targetRevision: "x.x.x"
+  values: {}

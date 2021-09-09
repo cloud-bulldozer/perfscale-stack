@@ -11,7 +11,7 @@ metadata:
 spec:
   ignoreDifferences:
   - group: admissionregistration.k8s.io
-    kind: ValidatingWebhookConfiguration
+    kind: MutatingWebhookConfiguration
     jsonPointers:
       - /webhooks/0/clientConfig/caBundle
   project: {{ .Values.global.project }}

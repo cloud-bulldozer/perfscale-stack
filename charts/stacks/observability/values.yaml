@@ -86,3 +86,19 @@ grafana:
     persistence:
       enabled: true
       size: 1024Gi
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+        - name: Cluster Prometheus
+          type: prometheus
+          access: proxy
+          url: https://prometheus-k8s.openshift-monitoring.svc:9091
+        - name: Thanos
+          type: prometheus
+          access: proxy
+          url: http://thanos-query.thanos.svc.cluster.local:9090
+        - name: Loki 
+          type: loki
+          access: proxy
+          url: http://loki.loki.svc.cluster.local:3100

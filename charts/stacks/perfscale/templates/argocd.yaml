@@ -27,7 +27,7 @@ spec:
       - name: server.route.enabled
         value: "true"
       - name: server.route.hostname
-        value: {{ .Values.argocd.name }}.{{ .Values.global.baseDomain }}
+        value: "{{ .Values.argocd.name }}.{{ .Values.global.baseDomain }}"
   syncPolicy:
     automated:
       prune: true

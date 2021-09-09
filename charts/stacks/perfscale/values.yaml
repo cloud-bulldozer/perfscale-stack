@@ -68,7 +68,6 @@ argocd:
     path: charts/argo-cd
     targetRevision: HEAD
   values:
-    installCRDs: false
     config:
       repositories: |
         - type: helm

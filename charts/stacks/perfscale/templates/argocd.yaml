@@ -23,30 +23,14 @@ spec:
       values: |-
 {{- toYaml . | nindent 8 }}
 {{- end }}
+      parameters:
+      - name: server.route.enabled
+        value: true
+      - name: server.route.hostname
+        value: {{ .Values.argocd.name }}.{{ .Values.global.baseDomain }}
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
----
-apiVersion: route.openshift.io/v1
-kind: Route
-metadata:
-  name: {{ .Values.argocd.name }}
-  namespace: {{ .Values.argocd.namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: {{ .Values.argocd.syncWave | quote }}
-spec:
-  host: {{ .Values.argocd.name }}.{{ .Values.global.baseDomain }}
-  port:
-    targetPort: https
-  tls:
-    insecureEdgeTerminationPolicy: Redirect 
-    termination: passthrough
-  to:
-    kind: Service
-    name: argocd-server
-    weight: 100
-  wildcardPolicy: None
-{{ end }}

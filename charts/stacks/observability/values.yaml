@@ -36,7 +36,7 @@ thanos:
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: thanos
-    targetRevision: ""
+    targetRevision: "x.x.x"
   values: {}
 
 loki:
@@ -47,7 +47,7 @@ loki:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
-    targetRevision: ""
+    targetRevision: "x.x.x"
   values: {}
 
 promtail: 
@@ -58,6 +58,6 @@ promtail:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: promtail
-    targetRevision: ""
+    targetRevision: "x.x.x"
   values: {}
   

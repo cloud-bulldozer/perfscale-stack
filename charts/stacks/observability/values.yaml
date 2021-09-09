@@ -23,7 +23,9 @@ elasticOperator:
     repoURL: https://github.com/elastic/cloud-on-k8s
     path: deploy/eck-operator
     targetRevision: HEAD
-  values: {}
+  values:
+    image:
+      tag: 1.7.1
 
 
 thanos:

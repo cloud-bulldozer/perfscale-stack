@@ -37,6 +37,10 @@ airflow:
       secrets:
         backend: airflow.providers.hashicorp.secrets.vault.VaultBackend
         backend_kwargs: '{"connections_path": "connections", "variables_path": "variables", "kubernetes_role": "airflow", "auth_type": "kubernetes", "mount_point": "airflow", "url": "http://vault.vault.svc.cluster.local:8200"}'
+      webserver:
+        instance_name: Performance and Scale
+        expose_config: True
+        default_ui_timezone: America/New_York
     dags:
       gitSync:
         enabled: true
@@ -44,6 +48,8 @@ airflow:
         depth: 8
     webserver:
       replicas: 3
+      defaultUser:
+        enabled: false
     migrateDatabaseJob:
       jobAnnotations:
         "argocd.argoproj.io/hook": "Sync"
@@ -61,18 +67,30 @@ argocd:
     repoURL: https://github.com/argoproj/argo-helm
     path: argo-helm/charts
     targetRevision: HEAD
-  values: {}
-
-dashboard: 
-  name: perf-dashboard
-  enabled: true
-  syncWave: 0
-  namespace: perf-dashboard
-  source:
-    repoURL: https://github.com/whitleykeith/perfscale-stack
-    path: charts/components/dashboard
-    targetRevision: HEAD
-  values: {}
+  values:
+      installCRDs: false
+      global:
+        image:
+          tag: v1.8.1
+      dex:
+        enabled: false
+      server:
+        extraArgs:
+          - --insecure
+        config:
+          repositories: |
+            - type: helm
+              name: stable
+              url: https://charts.helm.sh/stable
+            - type: helm
+              name: argo-cd
+              url: https://argoproj.github.io/argo-helm
+            - type: helm
+              name: hashicorp
+              url: https://helm.releases.hashicorp.com
+            - type: helm
+              name: grafana
+              url: https://grafana.github.io/helm-charts
 
 vault:
   name: vault
@@ -82,7 +100,7 @@ vault:
   source:
     repoURL: https://helm.releases.hashicorp.com
     chart: vault
-    targetRevision: ""
+    targetRevision: "*"
   values:
     global:
       openshift: true 

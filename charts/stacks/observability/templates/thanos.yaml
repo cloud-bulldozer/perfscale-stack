@@ -27,6 +27,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
 ---
 apiVersion: route.openshift.io/v1                                                                                    
 kind: Route                                                                                                          

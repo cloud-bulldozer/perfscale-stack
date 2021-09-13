@@ -82,7 +82,7 @@ thanos:
       resources:
         requests:
           cpu: 3
-          memory: 10Gi
+          memory: 100Gi
         limits:
           memory: 200Gi
       nodeSelector:

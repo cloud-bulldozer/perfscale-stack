@@ -70,7 +70,7 @@ promtail:
       privileged: true
       allowPrivilegeEscalation: true
     config:
-      lokiAddress: loki.loki.svc.cluster.local:3100/loki/api/v1/push
+      lokiAddress: http://loki.loki.svc.cluster.local:3100/loki/api/v1/push
   
 
 grafana: 

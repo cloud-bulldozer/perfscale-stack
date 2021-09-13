@@ -50,8 +50,6 @@ airflow:
         depth: 8
     webserver:
       replicas: 3
-      defaultUser:
-        enabled: false
     migrateDatabaseJob:
       jobAnnotations:
         "argocd.argoproj.io/hook": "Sync"

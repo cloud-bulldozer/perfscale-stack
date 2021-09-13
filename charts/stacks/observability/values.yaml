@@ -41,15 +41,12 @@ thanos:
     image:
       repository: thanosio/thanos
       tag: v0.22.0
-
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
         namespace: openshift-monitoring
-
     existingObjstoreSecret: thanos-objstore-secret
-
     query:
       logLevel: debug
       replicaLabel:
@@ -87,7 +84,9 @@ thanos:
           cpu: 3
           memory: 10Gi
         limits:
-          memory: 20Gi
+          memory: 200Gi
+      nodeSelector:
+        node.kubernetes.io/instance-type: r5.16xlarge
       enabled: true
       replicaCount: 1
       persistence:

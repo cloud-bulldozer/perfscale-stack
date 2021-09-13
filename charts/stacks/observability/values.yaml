@@ -37,7 +37,101 @@ thanos:
     repoURL: https://charts.bitnami.com/bitnami
     chart: thanos
     targetRevision: "x.x.x"
-  values: {}
+  values:
+    image:
+      repository: thanosio/thanos
+      tag: v0.22.0
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        namespace: openshift-monitoring
+
+    existingObjstoreSecret: thanos-objstore-secret
+
+    query:
+      logLevel: debug
+      replicaLabel:
+        - prometheus_replica
+        - replica
+    receive:
+      enabled: true
+      logLevel: debug
+      mode: dual-mode
+      distributor:
+        replicaCount: 3
+      nodeSelector:
+        node.kubernetes.io/instance-type: r5.16xlarge
+      tsdbRetention: 14d
+      resources:
+        requests:
+          cpu: 3
+          memory: 450Gi
+        limits:
+          memory: 450Gi
+      service:
+        additionalHeadless: true
+        remoteWrite:
+          port: 19291
+      replicaCount: 4
+      persistence:
+        enabled: true
+        size: 1024Gi
+    storegateway:
+      logLevel: debug 
+      extraFlags:
+      - "--max-time=-14d"
+      resources:
+        requests:
+          cpu: 3
+          memory: 10Gi
+        limits:
+          memory: 20Gi
+      enabled: true
+      replicaCount: 1
+      persistence:
+        size: 1024Gi
+      service:
+        additionalHeadless: true
+    bucketweb:
+      enabled: true
+    compactor:
+      enabled: true
+      persistence:
+        size: 1024Gi
+      retentionResolutionRaw: 14d
+      retentionResolution5m: 30d
+      retentionResolution1h: 60d
+    minio:
+      enabled: true
+      existingSecret: thanos-minio
+      gateway:
+        enabled: true
+        type: s3
+      mode: distributed
+      metrics:
+        serviceMonitor:
+          enabled: true
+          namespace: openshift-monitoring
+
+    ruler:
+      enabled: true
+      alertmanagers:
+        - alertmanager-main.openshift-monitoring.svc.cluster.local:9094
+      config:
+        groups:
+          - name: cluster_status
+            rules:
+            - alert: ClusterAPIServerUp
+              expr: sum(up{apiserver="openshift-apiserver"}) by (openshift_cluster_name) == 3
+              for: 5m
+              labels:
+                severity: info
+              annotations:
+                summary: Cluster {{ "{{$labels.openshift_cluster_name}}" }} API Servers are up
+
+            
 
 loki:
   name: loki

@@ -44,7 +44,6 @@ spec:
     name: {{ .Values.thanos.name }}-receive                                                                                             
     weight: 100                                                                                                      
   wildcardPolicy: None                                                                                               
-{{ end }}
 ---
 apiVersion: route.openshift.io/v1                                                                                    
 kind: Route                                                                                                          

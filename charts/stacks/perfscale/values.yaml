@@ -200,9 +200,6 @@ vault:
     # Vault UI
     ui:
       enabled: true
-      serviceType: "LoadBalancer"
-      serviceNodePort: null
-      externalPort: 8200
 
 
 dashboard:

@@ -99,63 +99,6 @@ vault:
     global:
       openshift: true
       enabled: true
-      tlsDisable: true
-
-    injector:
-      enabled: false
-      image:
-        repository: "hashicorp/vault-k8s"
-        tag: "latest"
-
-      resources:
-          requests:
-            memory: 4Gi
-            cpu: 2
-          limits:
-            memory: 4Gi
-            cpu: 2
-
-    server:
-      # These Resource Limits are in line with node requirements in the
-      # Vault Reference Architecture for a Small Cluster
-      resources:
-        requests:
-          memory: 8Gi
-          cpu: 2000m
-        limits:
-          memory: 16Gi
-          cpu: 2000m
-
-      # For HA configuration and because we need to manually init the vault,
-      # we need to define custom readiness/liveness Probe settings
-      readinessProbe:
-        enabled: true
-        path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
-      livenessProbe:
-        enabled: true
-        path: "/v1/sys/health?standbyok=true"
-        initialDelaySeconds: 60
-
-
-      # This configures the Vault Statefulset to create a PVC for audit logs.
-      # See https://www.vaultproject.io/docs/audit/index.html to know more
-      auditStorage:
-        enabled: true
-
-      standalone:
-        enabled: false
-
-      # Run Vault in "HA" mode.
-      ha:
-        enabled: true
-        replicas: 3
-        raft:
-          enabled: true
-          setNodeId: true
-
-    # Vault UI
-    ui:
-      enabled: true
 
 
 dashboard:

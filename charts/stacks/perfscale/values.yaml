@@ -99,7 +99,7 @@ vault:
     global:
       openshift: true
       enabled: true
-      tlsDisable: false
+      tlsDisable: true
 
     injector:
       enabled: false

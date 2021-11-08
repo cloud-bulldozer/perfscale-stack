@@ -131,6 +131,7 @@ loki:
     chart: loki
     targetRevision: "x.x.x"
   values:
+    replicas: 3
     persistence:
       enabled: true
       size: 1024Gi

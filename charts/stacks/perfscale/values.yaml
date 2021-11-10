@@ -99,9 +99,6 @@ vault:
     global:
       openshift: true
       enabled: true
-    server:
-      route:
-        enabled: true
     ha:
       enabled: true
       replicas: 3

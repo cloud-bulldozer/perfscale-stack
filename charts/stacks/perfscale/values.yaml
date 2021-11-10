@@ -99,6 +99,8 @@ vault:
     global:
       openshift: true
       enabled: true
+    route:
+      enabled: true
 
 
 dashboard:

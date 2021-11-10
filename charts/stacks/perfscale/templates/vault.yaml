@@ -28,25 +28,13 @@ spec:
       values: |-
 {{- toYaml . | nindent 8 }}
 {{- end }}
+      parameters:
+      - name: route.host
+        value: {{ .Values.vault.name }}.{{ .Values.global.baseDomain }} 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
----
-apiVersion: route.openshift.io/v1                                                                                    
-kind: Route                                                                                                          
-metadata:                                                                                                                                                                                                                                                                        
-  name: {{ .Values.vault.name }}                                                                                               
-  namespace: {{ .Values.vault.namespace }}                                                                                                                                                                       
-spec:                                                                                                                
-  host: {{ .Values.vault.name }}.{{ .Values.global.baseDomain }}                                  
-  port:                                                                                                              
-    targetPort: http                                                                                        
-  to:                                                                                                                
-    kind: Service                                                                                                    
-    name: {{ .Values.vault.name }}                                                                                           
-    weight: 100                                                                                                      
-  wildcardPolicy: None                                                                                               
+    - CreateNamespace=true                                                                                             
 {{ end }}

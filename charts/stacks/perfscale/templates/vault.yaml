@@ -29,7 +29,7 @@ spec:
 {{- toYaml . | nindent 8 }}
 {{- end }}
       parameters:
-      - name: route.host
+      - name: server.route.host
         value: {{ .Values.vault.name }}.{{ .Values.global.baseDomain }} 
   syncPolicy:
     automated:

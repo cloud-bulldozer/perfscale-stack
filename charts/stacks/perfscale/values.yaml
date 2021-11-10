@@ -99,12 +99,13 @@ vault:
     global:
       openshift: true
       enabled: true
-    ha:
-      enabled: true
-      replicas: 3
-      raft:
+    server:
+      ha:
         enabled: true
-        setNodeId: true
+        replicas: 3
+        raft:
+          enabled: true
+          setNodeId: true
     ui:
       enabled: true
 

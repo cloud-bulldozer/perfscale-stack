@@ -38,7 +38,7 @@ airflow:
         processor_poll_interval: 30
       secrets:
         backend: airflow.providers.hashicorp.secrets.vault.VaultBackend
-        backend_kwargs: '{"connections_path": "connections", "variables_path": "variables", "kubernetes_role": "airflow", "auth_type": "kubernetes", "mount_point": "airflow", "url": "http://vault.vault.svc.cluster.local:8200"}'
+        backend_kwargs: '{"connections_path": "connections", "variables_path": "variables", "kubernetes_role": "airflow", "auth_type": "kubernetes", "mount_point": "airflow", "url": "http://vault-active.vault.svc.cluster.local:8200"}'
       webserver:
         instance_name: Performance and Scale
         expose_config: True

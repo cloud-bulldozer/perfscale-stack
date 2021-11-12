@@ -12,7 +12,7 @@ install_argo
 
 
 envsubst < $GIT_ROOT/apps/perfscale.yaml | kubectl apply -f -
-envsubst < $GIT_ROOT/apps/observability.yaml | kubectl apply -f -
+# envsubst < $GIT_ROOT/apps/observability.yaml | kubectl apply -f -
 
 _argo_url=$(oc get route/argocd -o jsonpath='{.spec.host}' -n argocd)
 _argo_user="admin"

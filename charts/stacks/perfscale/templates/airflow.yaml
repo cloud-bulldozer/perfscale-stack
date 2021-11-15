@@ -60,23 +60,6 @@ spec:
     name: {{ .Values.airflow.name }}-webserver
     weight: 100
   wildcardPolicy: None
----
-apiVersion: route.openshift.io/v1
-kind: Route
-metadata:
-  name: airflow
-  namespace: airflow
-  annotations:
-    argocd.argoproj.io/sync-wave: {{ .Values.airflow.syncWave | quote }}
-spec:
-  host: {{ .Values.airflow.hostName }}.{{ .Values.global.baseDomain }}
-  port:
-    targetPort: 8080
-  to:
-    kind: Service
-    name: airflow-webserver
-    weight: 100
-  wildcardPolicy: None
 --- 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

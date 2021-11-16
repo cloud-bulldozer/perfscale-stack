@@ -20,12 +20,10 @@ elastic:
         config:
           node.roles: ["master"]
           xpack.ml.enabled: true
-          node.remote_cluster_client: false
       - name: data
         count: 6
         config:
           node.roles: ["data", "ingest", "ml", "transform"]
-          node.remote_cluster_client: false
         volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data

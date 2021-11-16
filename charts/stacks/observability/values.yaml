@@ -20,6 +20,16 @@ elastic:
         config:
           node.roles: ["master"]
           xpack.ml.enabled: true
+        podTemplate:
+          spec:
+            containers:
+            - name: elasticsearch
+              resources:
+                limits:
+                  memory: 16Gi
+              securityContext:
+                capabilities:
+                  add: ["SYS_CHROOT"]
       - name: data
         count: 6
         config:
@@ -33,6 +43,17 @@ elastic:
             resources:
               requests:
                 storage: 256Gi
+        podTemplate:
+          spec:
+            containers:
+            - name: elasticsearch
+              resources:
+                limits:
+                  memory: 16Gi
+              securityContext:
+                capabilities:
+                  add: ["SYS_CHROOT"]
+
 elasticOperator:
   name: eck-operator
   enabled: true

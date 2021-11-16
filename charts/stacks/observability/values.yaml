@@ -56,8 +56,6 @@ thanos:
       enabled: true
       logLevel: debug
       mode: dual-mode
-      distributor:
-        replicaCount: 3
       nodeSelector:
         node.kubernetes.io/instance-type: r5.16xlarge
       tsdbRetention: 14d
@@ -75,6 +73,9 @@ thanos:
       persistence:
         enabled: true
         size: 1024Gi
+    receiveDistributor:
+      enabled: true
+      replicaCount: 4
     storegateway:
       logLevel: debug 
       extraFlags:

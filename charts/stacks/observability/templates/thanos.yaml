@@ -38,7 +38,7 @@ metadata:
 spec:                                                                                                                
   host: {{ .Values.thanos.name }}.{{ .Values.global.baseDomain }}                                  
   port:                                                                                                              
-    targetPort: remote-write                                                                                         
+    targetPort: remote                                                                                       
   to:                                                                                                                
     kind: Service                                                                                                    
     name: {{ .Values.thanos.name }}-receive                                                                                             

@@ -27,9 +27,6 @@ elastic:
               resources:
                 limits:
                   memory: 16Gi
-              securityContext:
-                capabilities:
-                  add: ["SYS_CHROOT"]
       - name: data
         count: 6
         config:

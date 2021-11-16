@@ -12,8 +12,28 @@ elastic:
     repoURL: https://github.com/whitleykeith/perfscale-stack
     path: charts/components/elasticsearch
     targetRevision: HEAD
-  values: {}
-
+  values:
+    elasticsearch:
+      nodeSets:
+      - name: masters
+        count: 3 
+        node.roles: ["master"]
+        xpack.ml.enabled: true
+        node.remote_cluster_client: false
+      - name: data
+        count: 6
+        config:
+          node.roles: ["data", "ingest", "ml", "transform"]
+          node.remote_cluster_client: false
+        volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 256Gi
 elasticOperator:
   name: eck-operator
   enabled: true

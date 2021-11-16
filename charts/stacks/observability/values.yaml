@@ -17,9 +17,10 @@ elastic:
       nodeSets:
       - name: masters
         count: 3 
-        node.roles: ["master"]
-        xpack.ml.enabled: true
-        node.remote_cluster_client: false
+        config:
+          node.roles: ["master"]
+          xpack.ml.enabled: true
+          node.remote_cluster_client: false
       - name: data
         count: 6
         config:

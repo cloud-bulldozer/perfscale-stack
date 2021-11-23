@@ -57,6 +57,11 @@ spec:
     targetRevision: "x.x.x"
     helm:
       releaseName: {{ .Values.elastic.name }}-exporter
+      values:
+        serviceMonitor:
+          enabled: true
+        es:
+          cluster_settings: true
       parameters:
       - name: fullnameOverride
         value: {{ .Values.elastic.name }}-exporter

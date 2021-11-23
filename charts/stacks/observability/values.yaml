@@ -27,6 +27,12 @@ elastic:
               resources:
                 limits:
                   memory: 16Gi
+            - name: prometheus-exporter
+              image: quay.io/prometheuscommunity/elasticsearch-exporter:latest
+              command:
+                - '--es.uri=http://elasticsearch:9200'
+              ports:
+              - "127.0.0.1:9114:9114"
       - name: data
         count: 6
         config:
@@ -50,6 +56,12 @@ elastic:
               securityContext:
                 capabilities:
                   add: ["SYS_CHROOT"]
+            - name: prometheus-exporter
+              image: quay.io/prometheuscommunity/elasticsearch-exporter:latest
+              command:
+                - '--es.uri=http://elasticsearch:9200'
+              ports:
+              - "127.0.0.1:9114:9114"
 
 elasticOperator:
   name: eck-operator

@@ -20,7 +20,7 @@ elastic:
         config:
           node.roles: ["master"]
           xpack.ml.enabled: true
-          reindex.remote.whitelist: perf-results-elastic.apps.keith-cluster.perfscale.devcluster.openshift.com
+          reindex.remote.whitelist: perf-results-elastic.apps.keith-cluster.perfscale.devcluster.openshift.com:80
           xpack.security.authc:
             anonymous:
               username: anonymous
@@ -39,7 +39,7 @@ elastic:
         count: 6
         config:
           node.roles: ["data", "ingest", "ml", "transform"]
-          reindex.remote.whitelist: perf-results-elastic.apps.keith-cluster.perfscale.devcluster.openshift.com
+          reindex.remote.whitelist: perf-results-elastic.apps.keith-cluster.perfscale.devcluster.openshift.com:80
           xpack.security.authc:
             anonymous:
               username: anonymous

@@ -20,6 +20,11 @@ elastic:
         config:
           node.roles: ["master"]
           xpack.ml.enabled: true
+          xpack.security.authc:
+          anonymous:
+            username: anonymous
+            roles: superuser
+            authz_exception: false
         podTemplate:
           spec:
             containers:
@@ -37,6 +42,11 @@ elastic:
         count: 6
         config:
           node.roles: ["data", "ingest", "ml", "transform"]
+          xpack.security.authc:
+          anonymous:
+            username: anonymous
+            roles: superuser
+            authz_exception: false
         volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data

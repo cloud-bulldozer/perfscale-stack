@@ -32,6 +32,7 @@ elastic:
               resources:
                 requests:
                 limits:
+                  cpu: 6
                   memory: 16Gi
       - name: data
         count: 6
@@ -57,6 +58,7 @@ elastic:
             - name: elasticsearch
               resources:
                 limits:
+                  cpu: 6
                   memory: 16Gi
               securityContext:
                 capabilities:

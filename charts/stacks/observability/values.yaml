@@ -58,7 +58,7 @@ elastic:
                   add: ["SYS_CHROOT"]
             - name: prometheus-exporter
               image: quay.io/prometheuscommunity/elasticsearch-exporter:latest
-              command:
+              args:
                 - '--es.uri=http://0.0.0.0:9200'
               ports:
                 - containerPort: 9114

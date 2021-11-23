@@ -60,7 +60,6 @@ spec:
       values: |-
         serviceMonitor:
           enabled: true
-          namespace: openshift-monitoring
         es:
           cluster_settings: true
       parameters:

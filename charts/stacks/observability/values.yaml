@@ -94,7 +94,6 @@ thanos:
       enabled: true
       serviceMonitor:
         enabled: true
-        namespace: openshift-monitoring
     existingObjstoreSecret: thanos-objstore-secret
     query:
       logLevel: debug

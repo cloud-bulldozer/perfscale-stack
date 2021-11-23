@@ -32,7 +32,7 @@ elastic:
               command:
                 - '--es.uri=http://elasticsearch:9200'
               ports:
-              - "127.0.0.1:9114:9114"
+                - containerPort: 9114
       - name: data
         count: 6
         config:
@@ -61,7 +61,7 @@ elastic:
               command:
                 - '--es.uri=http://elasticsearch:9200'
               ports:
-              - "127.0.0.1:9114:9114"
+                - containerPort: 9114
 
 elasticOperator:
   name: eck-operator

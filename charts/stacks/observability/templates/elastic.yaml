@@ -36,4 +36,36 @@ spec:
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.elastic.name }}-exporter
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .Values.elastic.syncWave | default "0" | quote }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  destination: 
+    namespace: {{ .Values.elastic.namespace }}
+    server: {{ .Values.global.clusterURL }}
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: prometheus-elasticsearch-exporter 
+    targetRevision: "x.x.x"
+    helm:
+      releaseName: {{ .Values.elastic.name }}-exporter
+      parameters:
+      - name: fullnameOverride
+        value: {{ .Values.elastic.name }}-exporter
+      - name: es.uri
+        value: http://{{ .Values.elastic.name }}-es-http:9200
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
 {{ end }}

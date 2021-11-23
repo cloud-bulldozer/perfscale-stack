@@ -57,7 +57,7 @@ spec:
     targetRevision: "x.x.x"
     helm:
       releaseName: {{ .Values.elastic.name }}-exporter
-      values:
+      values: |-
         serviceMonitor:
           enabled: true
         es:

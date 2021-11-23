@@ -30,6 +30,8 @@ elastic:
             containers:
             - name: elasticsearch
               resources:
+                requests:
+                  memory: 8Gi
                 limits:
                   memory: 16Gi
       - name: data
@@ -55,6 +57,8 @@ elastic:
             containers:
             - name: elasticsearch
               resources:
+                requests:
+                  memory: 8Gi
                 limits:
                   memory: 16Gi
               securityContext:

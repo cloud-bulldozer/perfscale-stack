@@ -32,8 +32,8 @@ elastic:
               resources:
                 requests:
                 limits:
-                  cpu: 6
-                  memory: 16Gi
+                  cpu: 10
+                  memory: 32Gi
       - name: data
         count: 6
         config:
@@ -58,8 +58,8 @@ elastic:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 6
-                  memory: 16Gi
+                  cpu: 10
+                  memory: 32Gi
               securityContext:
                 capabilities:
                   add: ["SYS_CHROOT"]

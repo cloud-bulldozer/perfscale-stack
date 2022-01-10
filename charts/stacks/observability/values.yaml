@@ -185,10 +185,10 @@ loki:
     chart: loki
     targetRevision: "x.x.x"
   values:
-    replicas: 3
+    replicas: 6
     persistence:
       enabled: true
-      size: 1024Gi
+      size: 2048Gi
 
 promtail: 
   name: promtail

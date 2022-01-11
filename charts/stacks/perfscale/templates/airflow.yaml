@@ -26,7 +26,7 @@ spec:
         - name: AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH
           value: repo/
         - name: AIRFLOW__CORE__KILLED_TASK_CLEANUP_TIME
-          value: 604800
+          value: "604800"
         - name: GIT_REPO
           value: {{ $.Values.airflow.dagRepo.url }}
         - name: GIT_BRANCH

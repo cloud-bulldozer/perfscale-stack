@@ -20,7 +20,6 @@ elastic:
         config:
           node.roles: ["master"]
           xpack.ml.enabled: true
-          reindex.remote.whitelist: perf-results-elastic.apps.keith-cluster.perfscale.devcluster.openshift.com:80
           xpack.security.authc:
             anonymous:
               username: anonymous
@@ -38,8 +37,7 @@ elastic:
       - name: data
         count: 6
         config:
-          node.roles: ["data", "ingest", "ml", "transform"]
-          reindex.remote.whitelist: perf-results-elastic.apps.keith-cluster.perfscale.devcluster.openshift.com:80
+          node.roles: ["data_hot", "ingest", "ml", "transform"]
           xpack.security.authc:
             anonymous:
               username: anonymous
@@ -62,6 +60,64 @@ elastic:
                 limits:
                   cpu: 10
                   memory: 32Gi
+              securityContext:
+                capabilities:
+                  add: ["SYS_CHROOT"]
+      - name: warm
+        count: 3
+        config:
+          node.roles: ["data_warm", "ingest", "ml", "transform"]
+          xpack.security.authc:
+            anonymous:
+              username: anonymous
+              roles: superuser
+              authz_exception: false
+        volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 512Gi
+        podTemplate:
+          spec:
+            containers:
+            - name: elasticsearch
+              resources:
+                limits:
+                  cpu: 10
+                  memory: 16Gi
+              securityContext:
+                capabilities:
+                  add: ["SYS_CHROOT"]
+      - name: cold
+        count: 3
+        config:
+          node.roles: ["data_cold", "ingest", "ml", "transform"]
+          xpack.security.authc:
+            anonymous:
+              username: anonymous
+              roles: superuser
+              authz_exception: false
+        volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 512Gi
+        podTemplate:
+          spec:
+            containers:
+            - name: elasticsearch
+              resources:
+                limits:
+                  cpu: 10
+                  memory: 16Gi
               securityContext:
                 capabilities:
                   add: ["SYS_CHROOT"]

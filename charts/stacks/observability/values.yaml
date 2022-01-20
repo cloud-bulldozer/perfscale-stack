@@ -37,7 +37,7 @@ elastic:
       - name: data
         count: 6
         config:
-          node.roles: ["data_hot", "ingest", "ml", "transform"]
+          node.roles: ["data_hot", "data_content", "ingest", "ml", "transform"]
           xpack.security.authc:
             anonymous:
               username: anonymous

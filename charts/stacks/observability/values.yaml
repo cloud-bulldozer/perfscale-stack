@@ -278,7 +278,7 @@ grafana:
   values:
     persistence:
       enabled: true
-      size: 1024Gi
+      size: 1Gi
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -291,6 +291,8 @@ grafana:
           type: prometheus
           access: proxy
           url: http://thanos-query.thanos.svc.cluster.local:9090
+          jsonData:
+            timeout: 60
         - name: Loki 
           type: loki
           access: proxy

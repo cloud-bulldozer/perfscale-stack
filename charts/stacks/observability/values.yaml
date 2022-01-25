@@ -291,6 +291,8 @@ grafana:
           type: prometheus
           access: proxy
           url: http://thanos-query.thanos.svc.cluster.local:9090
+          jsonData:
+            timeout: 60
         - name: Loki 
           type: loki
           access: proxy

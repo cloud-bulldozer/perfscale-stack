@@ -274,7 +274,7 @@ grafana:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: grafana
-    targetRevision: "x.x.x"
+    targetRevision: "6.21.0"
   values:
     persistence:
       enabled: true

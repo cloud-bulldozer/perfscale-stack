@@ -18,8 +18,12 @@ airflow:
   values: 
     executor: KubernetesExecutor
     defaultAirflowRepository: quay.io/cloud-bulldozer/airflow
-    defaultAirflowTag: 2.2.0
-    airflowVersion: 2.2.0
+    defaultAirflowTag: 2.2.3
+    airflowVersion: 2.2.3
+    createUserJob:
+      useHelmHooks: false
+    migrateDatabaseJob:
+      useHelmHooks: false
     config:
       api:
         auth_backend: airflow.api.auth.backend.basic_auth
@@ -33,6 +37,8 @@ airflow:
       core:
         dagbag_import_timeout: 300
         killed_task_cleanup_time: 604800
+        dag_file_processor_timeout: 300
+        dagbag_import_error_traceback_depth: 4
       scheduler:
         scheduler_heartbeat_sec: 10
         processor_poll_interval: 30
@@ -50,13 +56,6 @@ airflow:
         depth: 8
     webserver:
       replicas: 3
-    migrateDatabaseJob:
-      jobAnnotations:
-        "argocd.argoproj.io/hook": "Sync"
-        "argocd.argoproj.io/hook-delete-policy": "BeforeHookCreation"
-        "helm.sh/hook": "pre-install"
-        "helm.sh/hook-weight": ""
-        "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 
 argocd: 
   name: argocd

@@ -245,6 +245,10 @@ loki:
     persistence:
       enabled: true
       size: 2048Gi
+    config:
+      table_manager:
+        retention_deletes_enabled: true
+        retention_period: 14d
 
 promtail: 
   name: promtail

@@ -280,6 +280,11 @@ grafana:
     chart: grafana
     targetRevision: "6.21.0"
   values:
+    deploymentStrategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 1
+      type: RollingUpdate
     persistence:
       enabled: true
       size: 1024Gi

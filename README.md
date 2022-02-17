@@ -13,7 +13,7 @@ Generally, the platform is used to enable running performance tests against a va
 
  In the above diagram, we've decided to deploy different parts of the platform in different openshift clusters for multiple reasons. However, this is not required as you can deploy the entire platform in a single cluster if desired. In fact, we deploy the entire platform into the observability cluster, but we simply don't use the underlying infra in that cluster to keep our secrets/workflows in an internal cluster and not in a public facing one.  
 
-# Stacks
+# Stacks/Clusters
 
 The platform is split largely into two separate stacks: `perfscale` and `observability`. Perfscale encapsulates the core automation infrastructure, while observability refers to the core monitoring infrastructure. Both stacks are deployed by [ArgoCD](https://argo-cd.readthedocs.io/en/stable/). The perfscale stack also configures argo to be self-managed, so we recommend always installing the perfscale stack for that reason. 
 
@@ -38,4 +38,30 @@ The observability stack is comprised of:
 * Promtail: Configured instance of promtail to send logs from the cluster to Loki (used only for logs from the cluster the stack is installed on)
 * Grafana: Used to Visualize the data within Loki/Thanos/Elasticsearch
 
+## Clusters
+
+The `cluster` directory contains yaml files meant to be applied to specific clusters in order to bootstrap them with the appropriate stacks. For the Performance and Scale team we have two clusters: `sailplane` and `observability` which are defined by the similarly named files. 
+
+
+# Installing
+
+> Note: This should only be done on fresh clusters, or when changing any related yaml in the `clusters` directory. Changes to anything else are automatically applied via ArgoCD.
+
+To install the perfscale stack, you can use the `scripts/build.sh` script. This requires you to have a kubeconfig configured to the cluster you wish to install these apps into. 
+
+Examples:
+
+```bash
+
+# This will make your cluster look like our sailplane cluster (core perf infra)
+# -w flag will make the script wait for apps to be healthy
+./scripts/build.sh -c sailplane -w
+
+# This will make your cluster look like our observability cluster (ArgoCD + observability infra)
+# no -w flag means the script will just apply the yaml and exit. 
+./scripts/build.sh -c observability
+```
+
+
+After installing, you should see related info printed out to STDOUT. If you wish to see that info again, you can simply rerun `scripts/get_cluster_info.sh` to get routes/login info about apps deployed by this repo. 
 

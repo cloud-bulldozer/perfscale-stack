@@ -115,7 +115,7 @@ dashboard:
   syncWave: 0
   namespace: dashboard
   source:
-    repoURL: https://github.com/whitleykeith/perfscale-stack
+    repoURL: https://github.com/cloud-bulldozer/perfscale-stack
     path: charts/components/dashboard
     targetRevision: HEAD
   values:

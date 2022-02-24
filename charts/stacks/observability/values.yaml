@@ -9,7 +9,7 @@ elastic:
   syncWave: 1
   namespace: perf-results
   source:
-    repoURL: https://github.com/whitleykeith/perfscale-stack
+    repoURL: https://github.com/cloud-bulldozer/perfscale-stack
     path: charts/components/elasticsearch
     targetRevision: HEAD
   values:

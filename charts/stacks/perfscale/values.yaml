@@ -14,7 +14,7 @@ airflow:
   source:
     repoURL: https://airflow.apache.org
     chart: airflow
-    targetRevision: "x.x.x"
+    targetRevision: "1.4.0"
   values: 
     executor: KubernetesExecutor
     defaultAirflowRepository: quay.io/cloud-bulldozer/airflow
@@ -93,7 +93,7 @@ vault:
   source:
     repoURL: https://helm.releases.hashicorp.com
     chart: vault
-    targetRevision: "x.x.x"
+    targetRevision: "0.19.0"
   values:
     global:
       openshift: true

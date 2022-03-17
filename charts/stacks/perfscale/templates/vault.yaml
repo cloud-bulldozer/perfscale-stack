@@ -6,8 +6,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: {{ .Values.vault.syncWave | default "0" | quote }}
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   ignoreDifferences:
   - group: admissionregistration.k8s.io

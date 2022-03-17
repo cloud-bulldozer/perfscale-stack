@@ -6,8 +6,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: {{ .Values.dashboard.syncWave | quote }}
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   ignoreDifferences:
   - group: image.openshift.io

@@ -4,8 +4,6 @@ kind: Application
 metadata:
   name: {{ .Values.elasticOperator.name | default "eck-operator" }}
   namespace: {{ .Release.Namespace }}
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   ignoreDifferences:
   - group: admissionregistration.k8s.io

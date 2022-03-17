@@ -65,7 +65,7 @@ argocd:
   source:
     repoURL: https://argoproj.github.io/argo-helm
     chart: argo-cd
-    targetRevision: "x.x.x"
+    targetRevision: "3.35.3"
   values:
     fullnameOverride: argocd
     installCRDs: false

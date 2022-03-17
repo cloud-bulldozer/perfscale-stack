@@ -16,7 +16,7 @@ spec:
   source:
     repoURL: {{ .Values.argocd.source.repoURL }}
     chart: {{ .Values.argocd.source.chart }} 
-    targetRevision: {{ .Values.argocd.source.targetRevision | default "x.x.x" }}
+    targetRevision: {{ .Values.argocd.source.targetRevision | default "3.35.3" }}
     helm:
       releaseName: {{ .Values.argocd.name }}
 {{- with .Values.argocd.values }}

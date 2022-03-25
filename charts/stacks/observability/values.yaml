@@ -288,6 +288,10 @@ grafana:
     persistence:
       enabled: true
       size: 1024Gi
+    grafana.ini:
+      server:
+        server:
+          domain: grafana.apps.observability.perfscale.devcluster.openshift.com
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -299,7 +303,7 @@ grafana:
         - name: Thanos
           type: prometheus
           access: proxy
-          url: http://thanos-query.thanos.svc.cluster.local:9090
+          url: http://thanos-query-frontend.thanos.svc.cluster.local:9090
           jsonData:
             timeout: 60
         - name: Loki 

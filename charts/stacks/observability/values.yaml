@@ -290,8 +290,7 @@ grafana:
       size: 1024Gi
     grafana.ini:
       server:
-        server:
-          domain: grafana.apps.observability.perfscale.devcluster.openshift.com
+        domain: grafana.apps.observability.perfscale.devcluster.openshift.com
     datasources:
       datasources.yaml:
         apiVersion: 1

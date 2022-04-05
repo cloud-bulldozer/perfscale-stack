@@ -278,7 +278,7 @@ grafana:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: grafana
-    targetRevision: "6.21.0"
+    targetRevision: "6.25.1"
   values:
     deploymentStrategy:
       rollingUpdate:

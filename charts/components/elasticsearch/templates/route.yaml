@@ -30,6 +30,8 @@ spec:
   host: {{ .Values.ingress.hostName }}-elastic.{{ .Values.ingress.baseDomain }}
   port:
     targetPort: http
+  tls:
+    termination: edge
   to:
     kind: Service
     name: {{ include "elasticsearch.fullname" . }}-es-http
@@ -37,4 +39,3 @@ spec:
   wildcardPolicy: None
 {{ end }}
 
-  

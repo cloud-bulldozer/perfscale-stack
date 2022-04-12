@@ -30,7 +30,7 @@ spec:
 ---
 apiVersion: route.openshift.io/v1                                                                                    
 kind: Route                                                                                                          
-metadata:                                                                                                                                                                                                                                                                        
+metadata:
   name: {{ .Values.thanos.name }}                                                                                               
   namespace: {{ .Values.thanos.namespace }}                                                                                                                                                                       
 spec:                                                                                                                
@@ -44,14 +44,16 @@ spec:
   wildcardPolicy: None                                                                                               
 ---
 apiVersion: route.openshift.io/v1                                                                                    
-kind: Route                                                                                                          
-metadata:                                                                                                                                                                                                                                                                        
+kind: Route
+metadata:
   name: {{ .Values.thanos.name }}-query                                                                                               
   namespace: {{ .Values.thanos.namespace }}                                                                                                                                                                       
 spec:                                                                                                                
   host: {{ .Values.thanos.name }}-query.{{ .Values.global.baseDomain }}                                  
   port:                                                                                                              
-    targetPort: http                                                                                         
+    targetPort: http
+  tls:
+    termination: edge
   to:                                                                                                                
     kind: Service                                                                                                    
     name: {{ .Values.thanos.name }}-query                                                                                             
@@ -60,13 +62,15 @@ spec:
 ---
 apiVersion: route.openshift.io/v1                                                                                    
 kind: Route                                                                                                          
-metadata:                                                                                                                                                                                                                                                                        
+metadata:
   name: {{ .Values.thanos.name }}-query-frontend                                                                                               
   namespace: {{ .Values.thanos.namespace }}                                                                                                                                                                       
 spec:                                                                                                                
   host: {{ .Values.thanos.name }}-query-frontend.{{ .Values.global.baseDomain }}                                  
   port:                                                                                                              
     targetPort: http                                                                                         
+  tls:
+    termination: edge
   to:                                                                                                                
     kind: Service                                                                                                    
     name: {{ .Values.thanos.name }}-query-frontend                                                                                             
@@ -75,7 +79,7 @@ spec:
 ---
 apiVersion: route.openshift.io/v1                                                                                    
 kind: Route                                                                                                          
-metadata:                                                                                                                                                                                                                                                                        
+metadata:
   name: {{ .Values.thanos.name }}-bucketweb                                                                                             
   namespace: {{ .Values.thanos.namespace }}                                                                                                                                                                       
 spec:                                                                                                                
@@ -90,7 +94,7 @@ spec:
 ---
 apiVersion: route.openshift.io/v1                                                                                    
 kind: Route                                                                                                          
-metadata:                                                                                                                                                                                                                                                                        
+metadata:
   name: {{ .Values.thanos.name }}-ruler                                                                                             
   namespace: {{ .Values.thanos.namespace }}                                                                                                                                                                       
 spec:                                                                                                                

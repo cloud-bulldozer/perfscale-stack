@@ -21,6 +21,8 @@ elastic:
           node.roles: ["master"]
         podTemplate:
           spec:
+            nodeSelector:
+              node.kubernetes.io/instance-type: m6i.4xlarge
             containers:
             - name: elasticsearch
               resources:
@@ -43,6 +45,8 @@ elastic:
                 storage: 256Gi
         podTemplate:
           spec:
+            nodeSelector:
+              node.kubernetes.io/instance-type: m6i.4xlarge
             containers:
             - name: elasticsearch
               resources:
@@ -67,6 +71,8 @@ elastic:
                 storage: 512Gi
         podTemplate:
           spec:
+            nodeSelector:
+              node.kubernetes.io/instance-type: m6i.4xlarge
             containers:
             - name: elasticsearch
               resources:
@@ -91,6 +97,8 @@ elastic:
                 storage: 512Gi
         podTemplate:
           spec:
+            nodeSelector:
+              node.kubernetes.io/instance-type: m6i.4xlarge
             containers:
             - name: elasticsearch
               resources:
@@ -145,7 +153,7 @@ thanos:
       logLevel: debug
       mode: dual-mode
       nodeSelector:
-        node.kubernetes.io/instance-type: r5.16xlarge
+        node.kubernetes.io/instance-type: r6i.16xlarge
       tsdbRetention: 14d
       resources:
         requests:
@@ -175,7 +183,7 @@ thanos:
         limits:
           memory: 200Gi
       nodeSelector:
-        node.kubernetes.io/instance-type: r5.16xlarge
+        node.kubernetes.io/instance-type: r6i.16xlarge
       enabled: true
       replicaCount: 1
       persistence:

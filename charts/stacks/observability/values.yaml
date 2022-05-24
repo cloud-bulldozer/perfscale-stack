@@ -265,7 +265,7 @@ grafana:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: grafana
-    targetRevision: "6.25.1"
+    targetRevision: "6.29.4"
   values:
     deploymentStrategy:
       rollingUpdate:
@@ -273,8 +273,9 @@ grafana:
         maxUnavailable: 1
       type: RollingUpdate
     persistence:
+      storageClassName: gp3-csi
       enabled: true
-      size: 1024Gi
+      size: 5Gi
     grafana.ini:
       server:
         domain: grafana.apps.observability.perfscale.devcluster.openshift.com

@@ -18,8 +18,8 @@ airflow:
   values: 
     executor: KubernetesExecutor
     defaultAirflowRepository: quay.io/cloud-bulldozer/airflow
-    defaultAirflowTag: 2.3.1
-    airflowVersion: 2.3.1
+    defaultAirflowTag: 2.3.2
+    airflowVersion: 2.3.2
     createUserJob:
       useHelmHooks: false
     migrateDatabaseJob:

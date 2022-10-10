@@ -137,7 +137,7 @@ thanos:
   values:
     image:
       repository: thanosio/thanos
-      tag: v0.22.0
+      tag: v0.24.0
     metrics:
       enabled: true
       serviceMonitor:
@@ -148,6 +148,8 @@ thanos:
       replicaLabel:
         - prometheus_replica
         - replica
+      extraFlags:
+        - "--enable-feature=promql-at-modifier"
     receive:
       enabled: true
       logLevel: debug

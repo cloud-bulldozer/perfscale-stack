@@ -45,7 +45,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: frontend
-          image: {{ include "dashboard.fullname" . }}:{{ .Values.frontend.image.tag }}
+          image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
           imagePullPolicy: "Always"
           ports:
             - containerPort: 3000
@@ -55,7 +55,7 @@ spec:
           securityContext:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
         - name: backend
-          image: {{ include "dashboard.fullname" . }}:{{ .Values.backend.image.tag }}
+          image: {{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}
           imagePullPolicy: "Always"
           securityContext:
             {{- toYaml .Values.backend.securityContext | nindent 12 }}

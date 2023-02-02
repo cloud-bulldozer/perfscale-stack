@@ -28,8 +28,8 @@ elasticsearch:
 
 frontend:
   image:
-    repository: quay.io/mleader/perf-dashboard
-    tag: front
+    repository: quay.io/jtaleric/frontend
+    tag: latest
   resources: {}
   securityContext:
     privileged: true
@@ -37,8 +37,8 @@ frontend:
 
 backend: 
   image:
-    repository: quay.io/mleader/perf-dashboard
-    tag: back
+    repository: quay.io/jtaleric/backend
+    tag: latest
   resources: {}
   securityContext: {}
   

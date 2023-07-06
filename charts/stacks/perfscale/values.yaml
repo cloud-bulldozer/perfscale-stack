@@ -14,12 +14,12 @@ airflow:
   source:
     repoURL: https://airflow.apache.org
     chart: airflow
-    targetRevision: "1.4.0"
+    targetRevision: "1.10.0"
   values: 
     executor: KubernetesExecutor
     defaultAirflowRepository: quay.io/cloud-bulldozer/airflow
-    defaultAirflowTag: 2.3.2
-    airflowVersion: 2.3.2
+    defaultAirflowTag: 2.6.2
+    airflowVersion: 2.6.2
     createUserJob:
       useHelmHooks: false
     migrateDatabaseJob:

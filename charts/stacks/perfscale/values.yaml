@@ -29,9 +29,6 @@ airflow:
         auth_backend: airflow.api.auth.backend.basic_auth
       logging:
         colored_console_log: "True"
-        remote_logging: "True"
-        remote_base_log_folder: s3://perfscale-airflow-logs/ci
-        remote_log_conn_id: S3Logs
       kubernetes:
         delete_worker_pods: True
       core:

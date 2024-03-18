@@ -9,7 +9,7 @@ replicaCount: 1
 ingress:
   enabled: true
   hostName: dashboard
-  baseDomain: apps.keith-cluster.perfscale.devcluster.openshift.com
+  baseDomain: apps.perfscale.devcluster.openshift.com
 
 airflow:
   url: "http://airflow-webserver.airflow.svc.cluster.local:8080"
@@ -28,7 +28,7 @@ elasticsearch:
 
 frontend:
   image:
-    repository: quay.io/jtaleric/frontend
+    repository: quay.io/cloud-bulldozer/frontend
     tag: latest
   resources: {}
   securityContext:
@@ -37,7 +37,7 @@ frontend:
 
 backend: 
   image:
-    repository: quay.io/jtaleric/backend
+    repository: quay.io/cloud-bulldozer/backend
     tag: latest
   resources: {}
   securityContext: {}
